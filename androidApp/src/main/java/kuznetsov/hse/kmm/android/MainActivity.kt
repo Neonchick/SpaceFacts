@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-
+import kuznetsov.hse.kmm.database.DatabaseInitializer
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
             }.launchIn(this)
             model.sharedViewModel.getPictureTitle()
         }
+
+        val database = DatabaseInitializer().database
     }
 
     private fun greet(): String {

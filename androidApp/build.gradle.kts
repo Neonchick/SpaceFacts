@@ -6,7 +6,7 @@ plugins {
 android {
     compileSdk = 31
     defaultConfig {
-        applicationId = "kuznetsov.hse.kmm.android"
+        applicationId = "kuznetsov.android"
         minSdk = 21
         targetSdk = 31
         versionCode = 1
@@ -27,4 +27,5 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.4.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
+    implementation("io.insert-koin:koin-android:3.1.2")
 }

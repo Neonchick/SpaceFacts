@@ -1,0 +1,21 @@
+CREATE TABLE SpacePictureDB (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    platform TEXT NOT NULL UNIQUE,
+    title TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM SpacePictureDB;
+
+selectById:
+SELECT * FROM SpacePictureDB WHERE id = ?;
+
+selectByPlatform:
+SELECT * FROM SpacePictureDB WHERE platform = ?;
+
+insertStats:
+INSERT OR IGNORE INTO SpacePictureDB(id, platform, title)
+VALUES (?,?,?);
+
+deleteAll:
+DELETE FROM SpacePictureDB;

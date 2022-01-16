@@ -3,6 +3,7 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     id("kotlinx-serialization")
+    id("com.squareup.sqldelight")
 }
 
 version = "1.0"
@@ -10,6 +11,8 @@ version = "1.0"
 val ktorVersion = "1.6.5"
 
 val coroutineVersion = "1.5.2-native-mt"
+
+val sql_delight_version = "1.5.3"
 
 kotlin {
     android()
@@ -34,11 +37,17 @@ kotlin {
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
                 implementation("co.touchlab:kermit:1.0.0")
+
                 implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"){
                     version {
                         strictly(coroutineVersion)
                     }
                 }
+
+                implementation("io.insert-koin:koin-core:3.1.2")
+
+                implementation("com.squareup.sqldelight:runtime:$sql_delight_version")
+                implementation("com.squareup.sqldelight:coroutines-extensions:$sql_delight_version")
             }
         }
         val commonTest by getting {
@@ -50,6 +59,8 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
+
+                implementation("com.squareup.sqldelight:android-driver:$sql_delight_version")
             }
         }
         val androidTest by getting {
@@ -74,6 +85,9 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             //iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                implementation("com.squareup.sqldelight:native-driver:$sql_delight_version")
+            }
         }
         val iosX64Test by getting
         val iosArm64Test by getting
@@ -87,12 +101,17 @@ kotlin {
     }
 }
 
-
 android {
     compileSdk = 31
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = 21
         targetSdk = 31
+    }
+}
+
+sqldelight {
+    database("SpacePicturesDatabase") {
+        packageName = "kuznetsov.hse.kmm"
     }
 }

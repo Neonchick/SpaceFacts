@@ -9,14 +9,14 @@ import io.ktor.client.request.*
 
 class SpacePictureHttpClient() {
 
-    private val log = co.touchlab.kermit.Logger(config = StaticConfig(), tag = "KTOR_")
-
     private val client = HttpClient {
         install(JsonFeature) {
             val jsonFormat = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
             serializer = KotlinxSerializer(json = jsonFormat)
         }
         install(Logging) {
+            val log = co.touchlab.kermit.Logger(config = StaticConfig(), tag = "KTOR_")
+
             logger = object : Logger {
                 override fun log(message: String) {
                     log.v { message }
