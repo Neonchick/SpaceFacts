@@ -14,7 +14,11 @@ class MpViewModel(private val onViewState: ((ViewState) -> Unit)? = null) {
     private val scope = MainScope()
 
     private val _viewStateFlow = MutableStateFlow(
-        ViewState(Greeting().greeting())
+        ViewState(
+            title = Greeting().greeting(),
+            explanation = "",
+            url = "",
+        )
     )
 
     val stateFlow: StateFlow<ViewState> = _viewStateFlow
@@ -38,10 +42,13 @@ class MpViewModel(private val onViewState: ((ViewState) -> Unit)? = null) {
     fun getPictureTitle() {
         scope.launch {
             getPictureTitleDb().onEach { spacePictureDB ->
-                val phrase = spacePictureDB?.title?.let { pictureTitle ->
-                     "Here will be picture with title \"$pictureTitle\" on ${Platform().platform}"
-                } ?: Greeting().greeting()
-                _viewStateFlow.value = ViewState(phrase)
+                spacePictureDB?.let { spacePictureDB ->
+                    _viewStateFlow.value = ViewState(
+                        title = spacePictureDB.title,
+                        explanation = spacePictureDB.explanation,
+                        url = spacePictureDB.url,
+                    )
+                }
             }.launchIn(scope = this)
             getPictureTitleNetw()
         }
@@ -56,10 +63,17 @@ class MpViewModel(private val onViewState: ((ViewState) -> Unit)? = null) {
     private suspend fun getPictureTitleNetw() {
         try {
             val platform = Platform().platform
-            val pictures: List<SpacePicture> = client.getPictures(1)
-            val pictureTitle = pictures.firstOrNull()?.title ?: ""
-            database.spacePicturesQueries
-                .insertStats(id = null, platform = platform, title = pictureTitle)
+            val picture: SpacePicture? = client.getPictures(1).firstOrNull()
+            picture?.let { picture ->
+                database.spacePicturesQueries
+                    .insertStats(
+                        id = null,
+                        platform = platform,
+                        title = picture.title,
+                        explanation = picture.explanation,
+                        url = picture.url,
+                    )
+            }
         } catch (error: Exception) {
             platformLogWriter().d(
                 message = "No network",

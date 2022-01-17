@@ -1,14 +1,21 @@
 package kuznetsov.hse.kmm.android
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kuznetsov.hse.kmm.Greeting
 import android.widget.TextView
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kuznetsov.hse.kmm.Greeting
+import kuznetsov.hse.kmm.ViewState
+import kuznetsov.hse.kmm.android.ui.ContentView
 import kuznetsov.hse.kmm.database.DatabaseInitializer
 
 class MainActivity : AppCompatActivity() {
@@ -17,14 +24,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        val tv: TextView = findViewById(R.id.text_view)
-        tv.text = greet()
+        val state = mutableStateOf(
+            ViewState(
+                title = Greeting().greeting(),
+                explanation = "",
+                url = "",
+            )
+        )
+
+        setContent {
+            ContentView(state)
+        }
 
         lifecycleScope.launch {
-            model.sharedViewModel.stateFlow.onEach {
-                tv.text = it.title
+            model.sharedViewModel.stateFlow.onEach { viewState ->
+                state.value = viewState
             }.launchIn(this)
             model.sharedViewModel.getPictureTitle()
         }

@@ -4,4 +4,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SpacePicture(@SerialName("title") val title: String)
+data class SpacePicture(
+
+    @SerialName("title")
+    val title: String,
+
+    @SerialName("explanation")
+    val explanation: String,
+
+    @SerialName("url")
+    val url: String,
+
+)

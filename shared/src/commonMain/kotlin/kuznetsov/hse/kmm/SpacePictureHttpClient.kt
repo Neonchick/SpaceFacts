@@ -26,11 +26,6 @@ class SpacePictureHttpClient() {
         }
     }
 
-    suspend fun test() {
-        val jsonResponse: List<SpacePicture> =
-            client.get("https://api.nasa.gov/planetary/apod?api_key=$NASA_API_KEY&count=5")
-    }
-
     suspend fun getPictures(count: Int): List<SpacePicture> {
         return client.get("https://api.nasa.gov/planetary/apod?api_key=$NASA_API_KEY&count=$count")
     }
