@@ -15,4 +15,7 @@ data class SpacePicture(
     @SerialName("url")
     val url: String,
 
+    @SerialName("date")
+    val date: String,
+
 )

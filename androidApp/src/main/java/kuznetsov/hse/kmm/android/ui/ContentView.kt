@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -49,7 +50,15 @@ fun ContentView(
             contentScale = ContentScale.FillWidth,
             modifier = Modifier
                 .height(260.dp)
+                .fillMaxWidth(1f)
                 .padding(top = 20.dp)
+        )
+        Text(
+            text = viewStateRemember.value.date,
+            fontSize = 16.sp,
+            textAlign = TextAlign.Center,
+            fontStyle = FontStyle.Italic,
+            modifier = Modifier.fillMaxWidth(1f),
         )
         Text(
             text = viewStateRemember.value.explanation,

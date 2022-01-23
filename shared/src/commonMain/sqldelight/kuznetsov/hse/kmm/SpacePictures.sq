@@ -3,7 +3,8 @@ CREATE TABLE SpacePictureDB (
     platform TEXT NOT NULL UNIQUE,
     title TEXT NOT NULL,
     explanation TEXT NOT NULL,
-    url TEXT NOT NULL
+    url TEXT NOT NULL,
+    date TEXT NOT NULL
 );
 
 selectAll:
@@ -16,8 +17,8 @@ selectByPlatform:
 SELECT * FROM SpacePictureDB WHERE platform = ?;
 
 insertStats:
-INSERT OR IGNORE INTO SpacePictureDB(id, platform, title, explanation, url)
-VALUES (?,?,?, ?, ?);
+INSERT OR IGNORE INTO SpacePictureDB(id, platform, title, explanation, url, date)
+VALUES (?,?,?, ?, ?, ?);
 
 deleteAll:
 DELETE FROM SpacePictureDB;

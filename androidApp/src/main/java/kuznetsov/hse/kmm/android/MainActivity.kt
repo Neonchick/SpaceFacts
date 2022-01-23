@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
                 title = Greeting().greeting(),
                 explanation = "",
                 url = "",
+                date = "",
             )
         )
 

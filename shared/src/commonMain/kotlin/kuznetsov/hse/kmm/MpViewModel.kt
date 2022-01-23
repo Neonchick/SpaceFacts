@@ -4,6 +4,7 @@ import co.touchlab.kermit.platformLogWriter
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.datetime.toLocalDate
 import kuznetsov.hse.kmm.database.DatabaseInitializer
 import kuznetsov.hse.kmm.database.selectByPlatform
 
@@ -18,6 +19,7 @@ class MpViewModel(private val onViewState: ((ViewState) -> Unit)? = null) {
             title = Greeting().greeting(),
             explanation = "",
             url = "",
+            date = "",
         )
     )
 
@@ -43,10 +45,13 @@ class MpViewModel(private val onViewState: ((ViewState) -> Unit)? = null) {
         scope.launch {
             getPictureTitleDb().onEach { spacePictureDB ->
                 spacePictureDB?.let { spacePictureDB ->
+                    val localDate = spacePictureDB.date.toLocalDate()
+                    val formattedDate = "${localDate.dayOfMonth} ${localDate.month} ${localDate.year}"
                     _viewStateFlow.value = ViewState(
                         title = spacePictureDB.title,
                         explanation = spacePictureDB.explanation,
                         url = spacePictureDB.url,
+                        date = formattedDate,
                     )
                 }
             }.launchIn(scope = this)
@@ -72,6 +77,7 @@ class MpViewModel(private val onViewState: ((ViewState) -> Unit)? = null) {
                         title = picture.title,
                         explanation = picture.explanation,
                         url = picture.url,
+                        date = picture.date,
                     )
             }
         } catch (error: Exception) {

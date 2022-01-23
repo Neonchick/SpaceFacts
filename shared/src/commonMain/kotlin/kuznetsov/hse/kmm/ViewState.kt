@@ -4,4 +4,5 @@ data class ViewState(
     val title: String,
     val explanation: String,
     val url: String,
+    val date: String,
 )

@@ -16,6 +16,8 @@ struct ViewStateScreen: View {
                 } placeholder: {
                    ProgressView()
                 }.padding(.top, 20)
+                Text(observableModel.viewState?.date ?? "")
+                    .padding(.top, 20)
                 Text(observableModel.viewState?.explanation ?? "")
                     .padding(.top, 20)
             }.onAppear(perform: {
