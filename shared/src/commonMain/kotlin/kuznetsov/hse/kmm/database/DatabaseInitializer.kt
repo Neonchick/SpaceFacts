@@ -25,3 +25,10 @@ fun SpacePicturesDatabase.selectByPlatform(platform: String): Flow<List<SpacePic
         .mapToList()
         .flowOn(Dispatchers.Default)
 
+fun SpacePicturesDatabase.selectAll(): Flow<List<SpacePictureDB>> =
+    this.spacePicturesQueries
+        .selectAll()
+        .asFlow()
+        .mapToList()
+        .flowOn(Dispatchers.Default)
+

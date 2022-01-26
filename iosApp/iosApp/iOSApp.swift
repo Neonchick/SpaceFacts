@@ -11,6 +11,5 @@ struct iOSApp: App {
 	init() {
 	    let koinInitializer = KoinInitializer()
         koinInitializer.doInitKoin()
-        let database = DatabaseInitializer().database
     }
 }

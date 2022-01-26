@@ -2,44 +2,54 @@ import SwiftUI
 import shared
 
 struct ViewStateScreen: View {
+    
     @ObservedObject
     var observableModel = ObservableViewStateModel()
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack{
-                Text(observableModel.viewState?.title ?? "")
-                    .font(Font.system(size: 22, design: Font.Design.default))
-                    .bold()
-                AsyncImage(url: URL(string: observableModel.viewState?.url ?? "")) { image in
-                   image.resizable()
-                       .aspectRatio(contentMode: .fit)
-                } placeholder: {
-                   ProgressView()
-                }.padding(.top, 20)
-                Text(observableModel.viewState?.date ?? "")
-                    .padding(.top, 20)
-                Text(observableModel.viewState?.explanation ?? "")
-                    .padding(.top, 20)
-            }.onAppear(perform: {
-                    observableModel.activate()
+        TabView {
+            NavigationView {
+                SpacePictureListView(
+                    pictures: observableModel.picturesFromNet ?? [:],
+                    observableModel: observableModel
+                )
+            }.tabItem {
+                    Image(systemName: "cloud")
+                    Text("New")
                 }
-            ).padding(30)
-        }
+
+            NavigationView {
+                SpacePictureListView(
+                    pictures: observableModel.picturesFromDB ?? [:],
+                    observableModel: observableModel
+                )
+            }.tabItem {
+                    Image(systemName: "heart.fill")
+                    Text("Saved")
+                }
+        }.onAppear(perform: { observableModel.activate() })
     }
 }
 
 class ObservableViewStateModel: ObservableObject {
 
-    private var viewModel: MpViewModel?
+    var viewModel: MpViewModel?
 
     @Published
-    var viewState: ViewState?
+    var picturesFromNet: Dictionary<String, SpacePictureVO>?
+    
+    @Published
+    var picturesFromDB: Dictionary<String, SpacePictureVO>?
 
     func activate() {
-        viewModel = MpViewModel { [weak self] viewState in
-            self?.viewState = viewState
-        }
-        viewModel?.getPictureTitle()
+        viewModel = MpViewModel (
+            onPicturesFromNet: { [weak self] picturesFromNet in
+                self?.picturesFromNet = picturesFromNet
+            },
+            onPicturesFromDB: { [weak self] picturesFromDB in
+                self?.picturesFromDB = picturesFromDB
+            }
+        )
+        viewModel?.getPicturesFromNet()
     }
 
 }

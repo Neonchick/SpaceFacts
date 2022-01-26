@@ -28,11 +28,31 @@ class SpacePictureHttpClient() {
 
     suspend fun getPictures(count: Int): List<SpacePicture> {
         return client.get("https://api.nasa.gov/planetary/apod?api_key=$NASA_API_KEY&count=$count")
+//        return listOf(
+//            SpacePicture(
+//                "1",
+//                "sdsdzxczcsdfsdfsadfadfasdf",
+//                "https://data.1freewallpapers.com/detail/crystal-mountain-lake.jpg",
+//                "2020-01-06"
+//            ),
+//            SpacePicture(
+//                "2",
+//                "sdsdzxczcsdfsdfsadfadfasdf",
+//                "https://data.1freewallpapers.com/detail/crystal-mountain-lake.jpg",
+//                "2020-01-06"
+//            ),
+//            SpacePicture(
+//                "3",
+//                "sdsdzxczcsdfsdfsadfadfasdf",
+//                "https://data.1freewallpapers.com/detail/crystal-mountain-lake.jpg",
+//                "2020-01-06"
+//            )
+//        )
     }
 
     companion object {
 
-        const val NASA_API_KEY = "LzrEqGiUEJ1eiKjg3Yv42dKFp57dMqbybvgGfnMw"
+        const val NASA_API_KEY = "sUMvShjcOjpyPlCwwgviIxrF9rDTi599anUktRbj"
 
     }
 
